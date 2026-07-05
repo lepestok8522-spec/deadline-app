@@ -33,6 +33,7 @@ out/
 
 ### Package Files ###
 *.jar
+!artifacts/*.jar   # ← ДОБАВЬТЕ ЭТУ СТРОКУ!
 *.war
 *.nar
 *.ear
@@ -40,5 +41,5 @@ out/
 *.tar.gz
 *.rar
 
-### MySQL data
+### MySQL data ###
 data/
