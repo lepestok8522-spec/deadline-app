@@ -41,5 +41,3 @@ out/
 *.tar.gz
 *.rar
 
-### MySQL data ###
-data/

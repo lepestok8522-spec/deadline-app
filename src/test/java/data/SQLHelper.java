@@ -1,0 +1,62 @@
+package data;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class SQLHelper {
+    private static final QueryRunner QUERY_RUNNER = new QueryRunner();
+
+    private SQLHelper() {
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "app", "pass");
+    }
+
+    public static DataHelper.VerificationCode getVerificationCode() {
+        var codeSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1";
+
+        // Ждем появления кода в БД (максимум 10 секунд)
+        for (int i = 0; i < 20; i++) {
+            try (var conn = getConnection()) {
+                var result = QUERY_RUNNER.query(conn, codeSQL, new BeanHandler<>(DataHelper.VerificationCode.class));
+                if (result != null && result.getCode() != null) {
+                    return result;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Thread.sleep(500); // Ждем 0.5 секунды
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public static void cleanDatabase() {
+        try (var conn = getConnection()) {
+            QUERY_RUNNER.execute(conn, "DELETE FROM auth_codes");
+            QUERY_RUNNER.execute(conn, "DELETE FROM card_transactions");
+            QUERY_RUNNER.execute(conn, "DELETE FROM cards");
+            QUERY_RUNNER.execute(conn, "DELETE FROM users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void cleanAuthCodes() {
+        try (var conn = getConnection()) {
+            QUERY_RUNNER.execute(conn, "DELETE FROM auth_codes");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
