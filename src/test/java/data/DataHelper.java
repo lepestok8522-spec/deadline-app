@@ -1,6 +1,10 @@
 package data;
 
 import com.github.javafaker.Faker;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Value;
 
 public class DataHelper {
     private static final Faker FAKER = new Faker();
@@ -28,37 +32,16 @@ public class DataHelper {
         return new VerificationCode(FAKER.numerify("######"));
     }
 
+    @Value
     public static class AuthInfo {
-        private final String login;
-        private final String password;
-
-        public AuthInfo(String login, String password) {
-            this.login = login;
-            this.password = password;
-        }
-
-        public String getLogin() {
-            return login;
-        }
-
-        public String getPassword() {
-            return password;
-        }
+        String login;
+        String password;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class VerificationCode {
-        private String code;
-
-        public VerificationCode(String code) {
-            this.code = code;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
+        String code;
     }
 }

@@ -19,26 +19,12 @@ public class SQLHelper {
 
     public static DataHelper.VerificationCode getVerificationCode() {
         var codeSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1";
-
-        // Ждем появления кода в БД (максимум 10 секунд)
-        for (int i = 0; i < 20; i++) {
-            try (var conn = getConnection()) {
-                var result = QUERY_RUNNER.query(conn, codeSQL, new BeanHandler<>(DataHelper.VerificationCode.class));
-                if (result != null && result.getCode() != null) {
-                    return result;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                Thread.sleep(500); // Ждем 0.5 секунды
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try (var conn = getConnection()) {
+            return QUERY_RUNNER.query(conn, codeSQL, new BeanHandler<>(DataHelper.VerificationCode.class));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public static void cleanDatabase() {

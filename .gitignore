@@ -1,11 +1,10 @@
 HELP.md
-.gradle
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 
-### STS ###
 .apt_generated
 .classpath
 .factorypath
@@ -14,26 +13,22 @@ build/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
 
-### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
 .vscode/
 
-### Package Files ###
 *.jar
-!artifacts/*.jar   # ← ДОБАВЬТЕ ЭТУ СТРОКУ!
+!artifacts/*.jar
 *.war
 *.nar
 *.ear
@@ -41,3 +36,5 @@ out/
 *.tar.gz
 *.rar
 
+/data/
+mysql-data/

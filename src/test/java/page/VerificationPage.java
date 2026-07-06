@@ -10,18 +10,17 @@ public class VerificationPage {
     private final SelenideElement verifyButton = $("[data-test-id='action-verify']");
 
     public VerificationPage() {
+
         codeField.shouldBe(visible);
     }
 
-    // Метод для ввода кода
-    public void verify(String code) {
-        codeField.setValue(code);
+    public void verify(String verificationCode) {
+        codeField.setValue(verificationCode);
         verifyButton.click();
     }
 
-    // Метод для успешной верификации
-    public DashboardPage validVerify(String code) {
-        verify(code);
+    public DashboardPage validVerify(String verificationCode) {
+        verify(verificationCode);
         return new DashboardPage();
     }
 }
